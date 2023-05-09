@@ -10,6 +10,11 @@
     --bg-color: #ff347f;
     --darker-pink: #c9356c;
     --ligther-pink: #f48db4;
+    
+    --container-bg-active: #f4eeff;
+    --bg-active: #a6b1e1;
+    --gray: #a6b1e1;
+    --blue: #424874;
 }
 
 body {
@@ -18,6 +23,7 @@ body {
     align-items: center;
     height: 100vh;
     background: var(--bg-color);
+    transition: 0.3s ease;
 }
 
 .container {
@@ -27,6 +33,7 @@ body {
     border-radius: 10px;
     box-shadow: 0 10px 20px rgba(0,0,0,0.3);
     background: var(--container-bg-color);
+    transition: 0.3s ease;
 }
 
 .box-1 {
@@ -38,16 +45,90 @@ body {
     height: 120px;
 }
 
-h2 {
+.toggle {
     width: 100%;
-    text-align: center;
-    padding: 10px 0;
+    border-bottom: 1px solid silver;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+}
+
+h2 {
+    width: 70%;
     font-size: 30px;
     font-weight: 700;
-    border-bottom: 1px solid silver;
     color: var(--darker-pink);
     cursor: default;
+    transition: 0.3s ease;
 }
+
+.toggle-box {
+    width: 60px;
+    height: 30px;
+    background: var(--ligther-pink);
+    border-radius: 30px;
+    position: relative;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.circle {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--darker-pink);
+    transform: scale(0.75);
+    position: absolute;
+    left: 0;
+    transition: 0.3s ease;
+}
+
+/*Toggle Box Off-On*/
+body.active {
+    background: var(--bg-active);
+}
+
+body.active .toggle-box {
+    background: var(--gray);
+}
+
+body.active h2 {
+    color: var(--blue);
+}
+
+body.active input:focus {
+    background: var(--blue);
+    color: var(--gray);
+}
+
+body.active input, body.active .generateBtn {
+    border-color: var(--blue);
+}
+
+body.active .container, body.active input, body.active .generateBtn {
+    background: var(--container-bg-active);
+}
+
+body.active .generateBtn, body.active .deleteBtn, body.active .text {
+    color: var(--blue);
+}
+
+body.active .generateBtn:hover, body.active .clearBtn {
+    background: var(--blue);
+    color: var(--container-bg-active);
+}
+
+body.active .circle {
+    left: 30px;
+    background: var(--blue);
+}
+
+body.active .todo, body.active .box-2::-webkit-scrollbar-thumb {
+    background: var(--gray);
+}
+
+/*---------------*/
 
 .generateLine {
     width: 100%;
@@ -65,6 +146,7 @@ input {
     font-size: 15px;
     border: 2px solid var(--bg-color);
     cursor: pointer;
+    transition: 0.3s ease;
 }
 
 input:focus {
@@ -88,7 +170,7 @@ input::placeholder {
     color: var(--bg-color);
     font-size: 15px;
     cursor: pointer;
-    transition: 0.5s;
+    transition: 0.3s ease;
 }
 
 .generateBtn:hover {
@@ -116,6 +198,7 @@ input::placeholder {
 .box-2::-webkit-scrollbar-thumb {
     background: var(--ligther-pink);
     border-radius: 8px;
+    transition: 0.3s ease;
 }
 
 .todo {
@@ -125,6 +208,7 @@ input::placeholder {
     min-height: 50px;
     background: var(--ligther-pink);
     border-radius: 5px;
+    transition: 0.3s ease;
 }
 
 .text {
@@ -136,6 +220,7 @@ input::placeholder {
     align-items: center;
     padding: 0 0 0 10px;
     overflow: hidden;
+    transition: 0.3s ease;
 }
 
 .deleteBtn {
@@ -149,7 +234,7 @@ input::placeholder {
     right: 5px;
     width: 50px;
     height: 50px;
-    transition: 0.5s ease;
+    transition: 0.3s ease;
 }
 
 .deleteBtn:hover {
@@ -163,12 +248,12 @@ input::placeholder {
     justify-content: space-between;
     align-items: center;
     padding: 0 30px;
+    gap: 20px;
     border-top: 1px solid silver;
 }
 
 .tasks {
     font-size: 17px;
-
 }
 
 .clearBtn {
@@ -185,4 +270,30 @@ input::placeholder {
 
 .clearBtn:hover {
     border-radius: 5px 15px;
+}
+
+@media (max-width: 480px) {
+    h2 {
+        font-size: 27px;
+    }
+    input, .generateBtn {
+        font-size: 14px;
+    }
+    .box-2 {
+        gap: 10px;
+    }
+    .text {
+        font-size: 16px;
+    }
+    .deleteBtn {
+        font-size: 18px;
+    }
+    .tasks {
+        font-size: 15px;
+    }
+    .clearBtn {
+        width: 80px;
+        height: 40px;
+        font-size: 14px;
+    }
 }

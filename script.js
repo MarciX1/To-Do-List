@@ -1,8 +1,10 @@
+const body = document.querySelector("body");
 const textBox = document.getElementById("textBox");
 const generateBtn = document.querySelector(".generateBtn");
 const clearBtn = document.querySelector(".clearBtn");
 const boxTwo = document.querySelector(".box-2");
 const span = document.querySelector("span");
+const toggleBox = document.querySelector(".toggle-box");
 
 let tasksCounter = 1;
 
@@ -56,6 +58,12 @@ function generateButton() {
 
 generateBtn.addEventListener("click", generateButton);
 
+// Toggle Box Off-On
+toggleBox.addEventListener("click", () => {
+    body.classList.toggle("active");
+    saveData();
+});
+
 // Loaded delete btn
 boxTwo.addEventListener("click", (event) => {
     if (event.target.classList.contains("loaded-delete-btn")) {
@@ -77,6 +85,8 @@ function saveData() {
     localStorage.setItem("data", boxTwo.innerHTML);
     localStorage.setItem("counter", tasksCounter);
     localStorage.setItem("spanCounter", span.textContent);
+    const bodyActive = body.classList.contains("active");
+    localStorage.setItem("toggleColors", bodyActive);
 }
 
 // Load task when user gets back
@@ -84,6 +94,7 @@ function showTask() {
     boxTwo.innerHTML = localStorage.getItem("data");
     tasksCounter = parseInt(localStorage.getItem("counter"));
     span.textContent = localStorage.getItem("spanCounter");
+    bodyActive = localStorage.getItem("toggleColors");
 
     const loadedDeleteButtons = document.querySelectorAll(".loaded-delete-btn");
     loadedDeleteButtons.forEach((button) => {
@@ -94,5 +105,12 @@ function showTask() {
             saveData();
         });
     });
+
+    if (bodyActive === "true") {
+        body.classList.add("active");
+    } else {
+        body.classList.remove("active");
+    }
+
 }
 showTask();

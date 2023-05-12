@@ -3,8 +3,37 @@ const textBox = document.getElementById("textBox");
 const generateBtn = document.querySelector(".generateBtn");
 const clearBtn = document.querySelector(".clearBtn");
 const boxTwo = document.querySelector(".box-2");
-const span = document.querySelector("span");
+const taskCounter = document.getElementById("task-counter")
 const toggleBox = document.querySelector(".toggle-box");
+const inputCounter = document.getElementById("counter");
+
+// Update Counter
+
+const maxChars = 50;
+
+// Input updatecounter on type and color add if reached max
+textBox.addEventListener("input", function() {
+    updateCounter();
+    counterColor();
+});
+
+function updateCounter() {
+    const inputLength  = textBox.value.length;
+    if (inputLength > maxChars) {
+        textBox.value = textBox.value.slice(0, maxChars);
+        inputCounter.textContent = maxChars.toString();
+    } else {
+        inputCounter.textContent = inputLength.toString();
+    }
+}
+
+function counterColor() {
+    if (textBox.value.length == maxChars) {
+        inputCounter.classList.add("counterColor");
+    } else {
+        inputCounter.classList.remove("counterColor");
+    }
+}
 
 let tasksCounter = 1;
 
@@ -16,6 +45,7 @@ function generateButton() {
         alert("You must write something");
     } else {
 
+        inputCounter.classList.remove("counterColor");
         const inputValue = textBox.value;
         
         const div = document.createElement("div");
@@ -38,12 +68,12 @@ function generateButton() {
         deleteBtn.addEventListener("click", () => {
             div.remove()
             tasksCounter--;
-            span.textContent = parseInt(span.textContent) -1;
+            taskCounter.textContent = parseInt(taskCounter.textContent) -1;
             saveData();
         });
 
         // Pending Tasks
-        span.textContent = tasksCounter;
+        taskCounter.textContent = tasksCounter;
         tasksCounter++;
         tasksCounter = parseInt(localStorage.getItem("counter")) +1;
 
@@ -51,6 +81,9 @@ function generateButton() {
         div.appendChild(p1);
         div.appendChild(deleteBtn);
         boxTwo.appendChild(div);
+
+        // Reset inputCounter after clicked the button
+        inputCounter.textContent = 0;   
     }
     textBox.value = "";
     saveData();
@@ -76,7 +109,7 @@ boxTwo.addEventListener("click", (event) => {
 clearBtn.addEventListener("click", () => {
     boxTwo.innerHTML = "";
     tasksCounter = 1;
-    span.textContent = 0;
+    taskCounter.textContent = 0;
     saveData();
 });
 
@@ -84,7 +117,7 @@ clearBtn.addEventListener("click", () => {
 function saveData() {
     localStorage.setItem("data", boxTwo.innerHTML);
     localStorage.setItem("counter", tasksCounter);
-    localStorage.setItem("spanCounter", span.textContent);
+    localStorage.setItem("taskCounter", taskCounter.textContent);
     const bodyActive = body.classList.contains("active");
     localStorage.setItem("toggleColors", bodyActive);
 }
@@ -93,24 +126,25 @@ function saveData() {
 function showTask() {
     boxTwo.innerHTML = localStorage.getItem("data");
     tasksCounter = parseInt(localStorage.getItem("counter"));
-    span.textContent = localStorage.getItem("spanCounter");
+    taskCounter.textContent = localStorage.getItem("taskCounter");
     bodyActive = localStorage.getItem("toggleColors");
 
     const loadedDeleteButtons = document.querySelectorAll(".loaded-delete-btn");
+
     loadedDeleteButtons.forEach((button) => {
         button.addEventListener("click", () => {
             button.parentNode.remove();
             tasksCounter--;
-            span.textContent = parseInt(span.textContent) -1;
+            taskCounter.textContent = parseInt(taskCounter.textContent) -1;
             saveData();
         });
     });
 
     if (bodyActive === "true") {
-        body.classList.add("active");
+        body.classList.add("active");   
     } else {
         body.classList.remove("active");
-    }
+    } 
 
 }
 showTask();

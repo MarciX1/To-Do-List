@@ -46,6 +46,7 @@ body {
 }
 
 .toggle {
+    height: 55px;
     width: 100%;
     border-bottom: 1px solid silver;
     display: flex;
@@ -131,10 +132,23 @@ body.active .todo, body.active .box-2::-webkit-scrollbar-thumb {
 /*---------------*/
 
 .generateLine {
+    position: relative;
     width: 100%;
-    padding: 10px 20px;
+    padding: 20px 20px 0 20px;
     display: flex;
     gap: 10px;
+}
+
+.charsCounter {
+    position: absolute;
+    top: 0px;
+    left: 20px;
+    font-size: 12px;
+    letter-spacing: .1px;
+}
+
+.counterColor {
+    color: #e70000;
 }
 
 input {
@@ -185,8 +199,8 @@ input::placeholder {
     gap: 20px;
     width: 100%;
     height: 400px;
-    padding: 10px 20px;
-    gap: 20px;
+    padding: 15px 20px;
+    gap: 15px;
     overflow-y: scroll;
     overflow-x: hidden;
 }
@@ -212,7 +226,7 @@ input::placeholder {
 }
 
 .text {
-    width: 85%;
+    width: 80%;
     color: var(--container-bg-color);
     font-size: 18px;
     font-weight: 500;
@@ -221,6 +235,10 @@ input::placeholder {
     padding: 0 0 0 10px;
     overflow: hidden;
     transition: 0.3s ease;
+}
+
+.text::-webkit-scrollbar {
+    width: 0;
 }
 
 .deleteBtn {
@@ -237,7 +255,7 @@ input::placeholder {
     transition: 0.3s ease;
 }
 
-.deleteBtn:hover {
+.deleteBtn:hover, body.active .deleteBtn:hover {
     color: var(--container-bg-color);
 }
 
@@ -281,6 +299,7 @@ input::placeholder {
     }
     .box-2 {
         gap: 10px;
+        padding: 10px 20px;
     }
     .text {
         font-size: 16px;

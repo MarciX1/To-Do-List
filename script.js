@@ -3,148 +3,149 @@ const textBox = document.getElementById("textBox");
 const generateBtn = document.querySelector(".generateBtn");
 const clearBtn = document.querySelector(".clearBtn");
 const boxTwo = document.querySelector(".box-2");
-const taskCounter = document.getElementById("task-counter")
+const taskCounter = document.getElementById("task-counter");
 const toggleBox = document.querySelector(".toggle-box");
 const inputCounter = document.getElementById("counter");
 
 // Update Counter
-
 const maxChars = 50;
 
 // Input updatecounter on type and color add if reached max
 textBox.addEventListener("input", function() {
-    updateCounter();
-    counterColor();
+  updateCounter();
+  counterColor();
 });
 
 function updateCounter() {
-    const inputLength  = textBox.value.length;
-    if (inputLength > maxChars) {
-        textBox.value = textBox.value.slice(0, maxChars);
-        inputCounter.textContent = maxChars.toString();
-    } else {
-        inputCounter.textContent = inputLength.toString();
-    }
+  const inputLength = textBox.value.length;
+  if (inputLength > maxChars) {
+    textBox.value = textBox.value.slice(0, maxChars);
+    inputCounter.textContent = maxChars.toString();
+  } else {
+    inputCounter.textContent = inputLength.toString();
+  }
 }
 
 function counterColor() {
-    if (textBox.value.length == maxChars) {
-        inputCounter.classList.add("counterColor");
-    } else {
-        inputCounter.classList.remove("counterColor");
-    }
+  if (textBox.value.length == maxChars) {
+    inputCounter.classList.add("counterColor");
+  } else {
+    inputCounter.classList.remove("counterColor");
+  }
 }
 
-let tasksCounter = 1;
+let tasksCounter = 0;
 
 // Generate The divs
 function generateButton() {
 
-    // If input empty then give a alert | Else create divs etc
-    if (textBox.value.trim() === "") {
-        alert("You must write something");
-    } else {
+  // If input empty then give a alert | Else create divs etc
+  if (textBox.value.trim() === "") {
+    alert("You must write something");
+  } else {
 
-        inputCounter.classList.remove("counterColor");
-        const inputValue = textBox.value;
-        
-        const div = document.createElement("div");
-        div.classList.add("todo");
+    inputCounter.classList.remove("counterColor");
+    const inputValue = textBox.value;
 
-        // Paragraphs
-        const p1 = document.createElement("p");
-        p1.classList.add("text");
-        p1.innerHTML = inputValue;
+    const div = document.createElement("div");
+    div.classList.add("todo");
 
-        // Button
-        const deleteBtn = document.createElement("button");
-        deleteBtn.classList.add("deleteBtn");
-        deleteBtn.classList.add("loaded-delete-btn");
-        const deleteBtnIcon = document.createElement("i");
-        deleteBtnIcon.classList.add("fa-regular", "fa-trash-can");
-        deleteBtn.appendChild(deleteBtnIcon);
+    // Paragraphs
+    const p1 = document.createElement("p");
+    p1.classList.add("text");
+    p1.innerHTML = inputValue;
 
-        // Delete div
-        deleteBtn.addEventListener("click", () => {
-            div.remove()
-            tasksCounter--;
-            taskCounter.textContent = parseInt(taskCounter.textContent) -1;
-            saveData();
-        });
+    // Button
+    const deleteBtn = document.createElement("button");
+    deleteBtn.classList.add("deleteBtn");
+    deleteBtn.classList.add("loaded-delete-btn");
+    const deleteBtnIcon = document.createElement("i");
+    deleteBtnIcon.classList.add("fa-regular", "fa-trash-can");
+    deleteBtn.appendChild(deleteBtnIcon);
 
-        // Pending Tasks
-        taskCounter.textContent = tasksCounter;
-        tasksCounter++;
-        tasksCounter = parseInt(localStorage.getItem("counter")) +1;
+    // Delete div
+    deleteBtn.addEventListener("click", () => {
+      div.remove()
+      tasksCounter--;
+      taskCounter.textContent = parseInt(taskCounter.textContent) - 1;
+      saveData();
+    });
 
-        // Appendchild
-        div.appendChild(p1);
-        div.appendChild(deleteBtn);
-        boxTwo.appendChild(div);
+    // Pending Tasks
+    tasksCounter++;
+    taskCounter.textContent = tasksCounter;
+    const counterValue = localStorage.getItem("counter");
+    tasksCounter = counterValue ? parseInt(counterValue) + 1 : 1;
 
-        // Reset inputCounter after clicked the button
-        inputCounter.textContent = 0;   
-    }
-    textBox.value = "";
-    saveData();
+    // Appendchild
+    div.appendChild(p1);
+    div.appendChild(deleteBtn);
+    boxTwo.appendChild(div);
+
+    // Reset inputCounter after clicked the button
+    inputCounter.textContent = 0;
+  }
+  textBox.value = "";
+  saveData();
 };
 
 generateBtn.addEventListener("click", generateButton);
 
 // Toggle Box Off-On
 toggleBox.addEventListener("click", () => {
-    body.classList.toggle("active");
-    saveData();
+  body.classList.toggle("active");
+  saveData();
 });
 
 // Loaded delete btn
 boxTwo.addEventListener("click", (event) => {
-    if (event.target.classList.contains("loaded-delete-btn")) {
-        event.target.parentNode.remove();
-        saveData();
-    }
+  if (event.target.classList.contains("loaded-delete-btn")) {
+    event.target.parentNode.remove();
+    saveData();
+  }
 });
 
 // Clear all divs
 clearBtn.addEventListener("click", () => {
-    boxTwo.innerHTML = "";
-    tasksCounter = 1;
-    taskCounter.textContent = 0;
-    saveData();
+  boxTwo.innerHTML = "";
+  tasksCounter = 0;
+  taskCounter.textContent = 0;
+  saveData();
 });
 
 // Save current data
 function saveData() {
-    localStorage.setItem("data", boxTwo.innerHTML);
-    localStorage.setItem("counter", tasksCounter);
-    localStorage.setItem("taskCounter", taskCounter.textContent);
-    const bodyActive = body.classList.contains("active");
-    localStorage.setItem("toggleColors", bodyActive);
+  localStorage.setItem("data", boxTwo.innerHTML);
+  localStorage.setItem("counter", tasksCounter);
+  localStorage.setItem("taskCounter", taskCounter.textContent);
+  const bodyActive = body.classList.contains("active");
+  localStorage.setItem("toggleColors", bodyActive);
 }
 
 // Load task when user gets back
 function showTask() {
-    boxTwo.innerHTML = localStorage.getItem("data");
-    tasksCounter = parseInt(localStorage.getItem("counter"));
-    taskCounter.textContent = localStorage.getItem("taskCounter");
-    bodyActive = localStorage.getItem("toggleColors");
+  boxTwo.innerHTML = localStorage.getItem("data");
+  const counterValue = localStorage.getItem("counter");
+  tasksCounter = counterValue ? parseInt(counterValue) : 0;
+  taskCounter.textContent = localStorage.getItem("taskCounter") || 0;
+  bodyActive = localStorage.getItem("toggleColors");
 
-    const loadedDeleteButtons = document.querySelectorAll(".loaded-delete-btn");
+  const loadedDeleteButtons = document.querySelectorAll(".loaded-delete-btn");
 
-    loadedDeleteButtons.forEach((button) => {
-        button.addEventListener("click", () => {
-            button.parentNode.remove();
-            tasksCounter--;
-            taskCounter.textContent = parseInt(taskCounter.textContent) -1;
-            saveData();
-        });
+  loadedDeleteButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      button.parentNode.remove();
+      tasksCounter--;
+      taskCounter.textContent = parseInt(taskCounter.textContent) - 1;
+      saveData();
     });
+  });
 
-    if (bodyActive === "true") {
-        body.classList.add("active");   
-    } else {
-        body.classList.remove("active");
-    } 
+  if (bodyActive === "true") {
+    body.classList.add("active");
+  } else {
+    body.classList.remove("active");
+  }
 
 }
 showTask();

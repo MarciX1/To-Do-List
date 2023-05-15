@@ -44,7 +44,6 @@ function generateButton() {
     alert("You must write something");
   } else {
 
-    inputCounter.classList.remove("counterColor");
     const inputValue = textBox.value;
 
     const div = document.createElement("div");
@@ -82,9 +81,10 @@ function generateButton() {
     div.appendChild(deleteBtn);
     boxTwo.appendChild(div);
 
-    // Reset inputCounter after clicked the button
-    inputCounter.textContent = 0;
   }
+  // Reset inputCounter after clicked the button, reset textbox
+  inputCounter.textContent = 0;
+  inputCounter.classList.remove("counterColor");
   textBox.value = "";
   saveData();
 };
@@ -109,7 +109,7 @@ boxTwo.addEventListener("click", (event) => {
 clearBtn.addEventListener("click", () => {
   boxTwo.innerHTML = "";
   tasksCounter = 0;
-  taskCounter.textContent = 0;
+  taskCounter.textContent = tasksCounter;
   saveData();
 });
 
